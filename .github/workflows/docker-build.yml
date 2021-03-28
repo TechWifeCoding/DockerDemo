@@ -7,7 +7,7 @@ on:
       - main
 env:
   # TODO: Change variable to your image's name.
-  IMAGE_NAME: clarkchenme/flask-hello
+  IMAGE_NAME: clarkchenme/flask-hello:v1
   CONTAINER_NAME: flask-hello
 
 jobs:
@@ -49,16 +49,9 @@ jobs:
         run: echo ${{ steps.docker_build.outputs.digest }}
 
   docker-deploy:
-    name: Build
     needs: docker-push
     runs-on: ubuntu-latest
     steps:
-      - name: test
-        run: echo  ${{ secrets.HOST }}
-
-      - name: test IMAGE_NAME
-        run: echo $IMAGE_NAME
-
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@master
         with:
