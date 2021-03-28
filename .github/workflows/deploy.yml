@@ -3,15 +3,15 @@ name: Deploy
 on:
   workflow_run:
     # Publish `master` as Docker `latest` image.
-    workflows: ["Docker"]
-    branches: [master]
+    workflows: ["DockerBuild"]
+    branches: [main]
     types: 
       - completed
 
 
 env:
   IMAGE_NAME: clarkchenme/flask-hello:v1
-  CONTAINER_NAME: flask-hello
+  CONTAINER_NAME: flask-hello-service
 
 jobs:
   build:
