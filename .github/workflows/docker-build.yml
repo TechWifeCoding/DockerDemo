@@ -1,0 +1,49 @@
+name: Docker Build
+
+on:
+  push:
+    # Publish `master` as Docker `latest` image.
+    branches:
+      - main
+env:
+  # TODO: Change variable to your image's name.
+  IMAGE_NAME: flask-hello
+
+jobs:
+  # Run tests.
+  # See also https://docs.docker.com/docker-hub/builds/automated-testing/
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build Image
+        run: |
+          if [ -f Dockerfile ]; then
+            docker build -t flask-hello:v1 .
+          fi
+
+  # Push image to GitHub Packages.
+  # See also https://docs.docker.com/docker-hub/builds/
+  docker:
+    runs-on: ubuntu-latest
+    needs: test 
+    steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1 
+        with:
+          username: ${{ secrets.DOCKER_HUB_USER }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: clarkchenme/flask-hello:v1
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
