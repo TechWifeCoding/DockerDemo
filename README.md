@@ -63,7 +63,7 @@ docker exec -it flask-hello-service /bin/bash
 
 整个部署过程其实就两个操作:
 1. [docker build and push](https://github.com/docker/build-push-action)
-2. [ssh remote executaion](https://github.com/marketplace/actions/remote-bash)
+2. [ssh remote executaion](https://github.com/appleboy/ssh-action)
 
 其中:
 1. 在这个项目中通过 docker buildx + qemu 让这份代码可以在  ARM、Power-PC 和 RISC-V 等多种CPU架构上执行,参考[buildx & qemu](https://my.oschina.net/u/4148359/blog/3136278)
